@@ -16,6 +16,11 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all()->sortByDesc('created_at');
+        // ddd($orders);
+        // $orders->each(function ($order) {
+        //     $order->food;
+        // });
+        $orders->load(['foods']);
         $foods = Food::all();
         return view('orders.index', compact('orders', 'foods'));
     }
@@ -38,11 +43,11 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $order = new Order;
-        $order->name = $request->name;
-        $order->food_id = $request->food_id;
-        $order->quantity = $request->quantity;
-        $order->save();
+        Order::create([
+            'name' => $request->name,
+            'quantity' => $request->quantity,
+            'food_id' => $request->food_id,
+        ]);
         return redirect('/orders');
     }
 
