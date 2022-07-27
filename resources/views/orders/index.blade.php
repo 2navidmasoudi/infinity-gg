@@ -6,7 +6,7 @@ Add New Order:
 <form action="{{ route('orders.store') }}" method="POST">
     @csrf
     @method('POST')
-    <select name="food">
+    <select name="food_id">
         @foreach ($foods as $food)
             <option value="{{ $food->id }}">{{ $food->name }}</option>
         @endforeach
@@ -18,23 +18,23 @@ Add New Order:
 
 @forelse ($orders as $order)
     <div>
-        <div>No.:{{ $order->id }}</div>
+        <div>#{{ $order->id }} - {{ $order->is_paid ? 'Paid ✅' : 'Unpaid ❌' }}</div>
         <div>Name: {{ $order->name }}</div>
         <div>Food Name: {{ $order->food->name }}</div>
         <div>Food Price: {{ $order->food->price }}</div>
         <div>Quantity:{{ $order->quantity }}</div>
         <div>Total Price {{ $order->food->price * $order->quantity }}</div>
-        <form action="{{ route('orders.update', $order) }}" method="post">
+        <form action="{{ route('orders.update', $order) }}" method="post" style="display: inline;">
             @csrf
             @method('PUT')
-            <input type="checkbox" name="is_paid" value="{{ $order->is_paid }}"
-                {{ $order->is_paid ? 'checked' : '' }}>
-            <button type="submit">Update</button>
-            <form action="{{ route('orders.destroy', $order) }}" method="post">
-                @csrf
-                @method('DELETE')
-                <button type="submit">X</button>
-            </form>
+            <input type="hidden" name="is_paid" value="{{ $order->is_paid }}">
+            <button type="submit">{{ !$order->is_paid ? '💰' : '💸' }}</button>
+        </form>
+        <form action="{{ route('orders.destroy', $order) }}" method="post" style="display: inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit">🗑️</button>
+        </form>
     </div>
     </div>
     <hr>

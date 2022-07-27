@@ -14,11 +14,11 @@ Add New Food:
 
 @forelse ($foods as $food)
     <div>
-        <div>No.:{{ $food->id }}</div>
+        <div>#{{ $food->id }}</div>
         <div>Name: {{ $food->name }}</div>
         <div>Price: {{ $food->price }}</div>
         <div>Quantity:{{ $food->quantity }}</div>
-        <form action="{{ route('foods.destroy', $food) }}" method="post">
+        <form action="{{ route('foods.destroy', $food) }}" method="post" style="display: inline">
             @csrf
             @method('DELETE')
             <button type="submit">X</button>

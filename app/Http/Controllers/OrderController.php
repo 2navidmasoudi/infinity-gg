@@ -16,11 +16,6 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all()->sortByDesc('created_at');
-        // ddd($orders);
-        // $orders->each(function ($order) {
-        //     $order->food;
-        // });
-        $orders->load(['foods']);
         $foods = Food::all();
         return view('orders.index', compact('orders', 'foods'));
     }
@@ -43,11 +38,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        Order::create([
-            'name' => $request->name,
-            'quantity' => $request->quantity,
-            'food_id' => $request->food_id,
-        ]);
+        Order::create($request->all());
+        Food::findORFail($request->food_id)->decrement('quantity', $request->quantity);
         return redirect('/orders');
     }
 
@@ -82,8 +74,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $order->name = $request->name;
-        $order->food = Food::find($request->food_id);
+        $order->is_paid = !$request->is_paid;
         $order->save();
         return redirect('/orders');
     }
@@ -97,6 +88,7 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
+        Food::findOrFail($order->food_id)->increment('quantity', $order->quantity);
         return redirect('/orders');
     }
 }

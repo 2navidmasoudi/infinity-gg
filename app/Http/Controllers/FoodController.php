@@ -36,12 +36,7 @@ class FoodController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $food = new Food;
-        $food->name = $input['name'];
-        $food->price = $input['price'];
-        $food->quantity = $input['quantity'];
-        $food->save();
+        Food::create($request->all());
         return redirect('/foods');
     }
 
