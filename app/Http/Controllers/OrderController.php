@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Food;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::all()->sortByDesc('created_at');
+        $foods = Food::all();
+        return view('orders.index', compact('orders', 'foods'));
     }
 
     /**
@@ -24,7 +27,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        return redirect('/orders');
     }
 
     /**
@@ -35,7 +38,12 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $order = new Order;
+        $order->name = $request->name;
+        $order->food_id = $request->food_id;
+        $order->quantity = $request->quantity;
+        $order->save();
+        return redirect('/orders');
     }
 
     /**
@@ -46,7 +54,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return view('orders.show', compact('order'));
     }
 
     /**
@@ -57,7 +65,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        return view('orders.edit', compact('order'));
     }
 
     /**
@@ -69,7 +77,10 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $order->name = $request->name;
+        $order->food = Food::find($request->food_id);
+        $order->save();
+        return redirect('/orders');
     }
 
     /**
@@ -80,6 +91,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return redirect('/orders');
     }
 }

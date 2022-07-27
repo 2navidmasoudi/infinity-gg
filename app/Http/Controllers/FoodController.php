@@ -14,7 +14,8 @@ class FoodController extends Controller
      */
     public function index()
     {
-        //
+        $foods = Food::all();
+        return view('foods.index', compact('foods'));
     }
 
     /**
@@ -24,7 +25,7 @@ class FoodController extends Controller
      */
     public function create()
     {
-        //
+        return redirect('/foods');
     }
 
     /**
@@ -35,7 +36,13 @@ class FoodController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $food = new Food;
+        $food->name = $input['name'];
+        $food->price = $input['price'];
+        $food->quantity = $input['quantity'];
+        $food->save();
+        return redirect('/foods');
     }
 
     /**
@@ -46,7 +53,7 @@ class FoodController extends Controller
      */
     public function show(Food $food)
     {
-        //
+        return view('foods.show', compact('food'));
     }
 
     /**
@@ -57,7 +64,7 @@ class FoodController extends Controller
      */
     public function edit(Food $food)
     {
-        //
+        return view('foods.edit', compact('food'));
     }
 
     /**
@@ -69,7 +76,10 @@ class FoodController extends Controller
      */
     public function update(Request $request, Food $food)
     {
-        //
+        $food->name = $request->name;
+        $food->price = $request->price;
+        $food->save();
+        return redirect('/foods');
     }
 
     /**
@@ -80,6 +90,7 @@ class FoodController extends Controller
      */
     public function destroy(Food $food)
     {
-        //
+        $food->delete();
+        return redirect('/foods');
     }
 }

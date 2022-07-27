@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FoodController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,7 +29,8 @@ use Illuminate\Support\Facades\Route;
 //     })->name('dashboard');
 // });
 
-Route::redirect('/', '/buffet', 301);
+Route::redirect('/', '/orders', 301);
 
+Route::resource('orders', OrderController::class);
 Route::resource('foods', FoodController::class);
-Route::resource('services', ServiceController::class);
+// Route::resource('services', ServiceController::class);
