@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('foods', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->bigInteger('pure_price')->nullable();
             $table->bigInteger('price')->nullable();
             $table->bigInteger('quantity')->default(0);
             $table->timestamps();

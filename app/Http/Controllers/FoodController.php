@@ -14,7 +14,7 @@ class FoodController extends Controller
      */
     public function index()
     {
-        $foods = Food::all();
+        $foods = Food::all()->sortByDesc('created_at');
         return view('foods.index', compact('foods'));
     }
 
